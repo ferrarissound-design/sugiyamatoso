@@ -4,7 +4,7 @@ const nav = document.querySelector('.global-nav');
 const unifiedNav = `
   <a href="company.html">会社案内</a>
   <a href="president.html">代表あいさつ</a>
-  <a href="index.html#service">施工内容</a>
+  <a href="service.html">施工内容</a>
   <a href="works.html">施工事例</a>
   <a class="nav-cta" href="contact.html">無料見積もり</a>
 `;
@@ -33,8 +33,10 @@ document.querySelectorAll('.footer-links').forEach((footer) => {
     <a href="index.html">トップ</a>
     <a href="company.html">会社案内</a>
     <a href="president.html">代表あいさつ</a>
+    <a href="service.html">施工内容</a>
     <a href="works.html">施工事例</a>
     <a href="contact.html">お問い合わせ</a>
+    <a href="privacy.html">プライバシー</a>
   `;
 });
 
@@ -43,11 +45,36 @@ if (year) year.textContent = new Date().getFullYear();
 
 const path = location.pathname.split('/').pop() || 'index.html';
 
+// 現在のページをナビ上で分かりやすく表示
+if (nav) {
+  const pageMap = {
+    'company.html': 'company.html',
+    'president.html': 'president.html',
+    'service.html': 'service.html',
+    'works.html': 'works.html',
+    'contact.html': 'contact.html'
+  };
+  const currentHref = pageMap[path];
+  if (currentHref) {
+    const currentLink = [...nav.querySelectorAll('a')].find((link) => link.getAttribute('href') === currentHref);
+    if (currentLink) {
+      currentLink.setAttribute('aria-current', 'page');
+      if (!currentLink.classList.contains('nav-cta')) currentLink.style.color = '#d96b32';
+    }
+  }
+}
+
 if (path === 'index.html' || path === '') {
   const heroPrimary = document.querySelector('.hero-actions .primary');
   if (heroPrimary) {
     heroPrimary.href = 'contact.html';
     heroPrimary.textContent = '無料で見積もりを相談する';
+  }
+
+  const heroSecondary = document.querySelector('.hero-actions .secondary');
+  if (heroSecondary) {
+    heroSecondary.href = 'service.html';
+    heroSecondary.textContent = '施工内容を見る';
   }
 
   const aboutCopy = document.querySelector('.about-copy');
@@ -65,6 +92,13 @@ if (path === 'index.html' || path === '') {
   if (contactButton) {
     contactButton.href = 'contact.html';
     contactButton.textContent = 'お問い合わせ・無料見積もり';
+  }
+}
+
+if (path === 'contact.html') {
+  const confirmation = document.querySelector('.check span');
+  if (confirmation) {
+    confirmation.innerHTML = 'このサイトがWeb制作練習用の架空企業サイトであることを確認し、<a href="privacy.html" style="color:#d96b32;text-decoration:underline">プライバシーポリシー</a>を確認しました。';
   }
 }
 
@@ -142,10 +176,15 @@ if (worksGrid) {
 
   const lightbox = document.createElement('div');
   lightbox.className = 'work-lightbox';
+  lightbox.setAttribute('aria-hidden', 'true');
   lightbox.innerHTML = '<button class="work-lightbox-close" type="button" aria-label="写真を閉じる">×</button><img src="" alt="施工事例 拡大写真">';
   document.body.appendChild(lightbox);
   const lightboxImage = lightbox.querySelector('img');
-  const closeLightbox = () => { lightbox.classList.remove('open'); document.body.style.overflow = ''; };
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
 
   worksGrid.querySelectorAll('.work-photo-button').forEach((button) => {
     button.addEventListener('click', () => {
@@ -153,6 +192,7 @@ if (worksGrid) {
       lightboxImage.src = work.image;
       lightboxImage.alt = `杉山塗装 ${work.title} 拡大写真`;
       lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
     });
   });
