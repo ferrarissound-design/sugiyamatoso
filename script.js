@@ -22,12 +22,22 @@ if (menuButton && nav) {
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 
-// トップページに会社案内への導線を追加
-if (nav && !nav.querySelector('a[href="company.html"]')) {
-  const companyLink = document.createElement('a');
-  companyLink.href = 'company.html';
-  companyLink.textContent = '会社案内';
-  nav.insertBefore(companyLink, nav.firstElementChild);
+// 各ページへの共通導線を補完
+if (nav) {
+  let companyLink = nav.querySelector('a[href="company.html"]');
+  if (!companyLink) {
+    companyLink = document.createElement('a');
+    companyLink.href = 'company.html';
+    companyLink.textContent = '会社案内';
+    nav.insertBefore(companyLink, nav.firstElementChild);
+  }
+
+  if (!nav.querySelector('a[href="president.html"]')) {
+    const presidentLink = document.createElement('a');
+    presidentLink.href = 'president.html';
+    presidentLink.textContent = '代表あいさつ';
+    companyLink.insertAdjacentElement('afterend', presidentLink);
+  }
 }
 
 const aboutCopy = document.querySelector('#about .about-copy');
@@ -38,6 +48,16 @@ if (aboutCopy && !aboutCopy.querySelector('.company-page-link')) {
   companyPageLink.textContent = '会社案内を詳しく見る';
   companyPageLink.style.marginTop = '18px';
   aboutCopy.appendChild(companyPageLink);
+}
+
+const companyAreaBox = document.querySelector('.area-box');
+if (companyAreaBox && !document.querySelector('.president-page-link')) {
+  const presidentPageLink = document.createElement('a');
+  presidentPageLink.href = 'president.html';
+  presidentPageLink.className = 'button primary president-page-link';
+  presidentPageLink.textContent = '代表あいさつを見る';
+  presidentPageLink.style.marginTop = '24px';
+  companyAreaBox.insertAdjacentElement('afterend', presidentPageLink);
 }
 
 // 実際の施工事例画像を掲載
