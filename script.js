@@ -22,6 +22,24 @@ if (menuButton && nav) {
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 
+// トップページに会社案内への導線を追加
+if (nav && !nav.querySelector('a[href="company.html"]')) {
+  const companyLink = document.createElement('a');
+  companyLink.href = 'company.html';
+  companyLink.textContent = '会社案内';
+  nav.insertBefore(companyLink, nav.firstElementChild);
+}
+
+const aboutCopy = document.querySelector('#about .about-copy');
+if (aboutCopy && !aboutCopy.querySelector('.company-page-link')) {
+  const companyPageLink = document.createElement('a');
+  companyPageLink.href = 'company.html';
+  companyPageLink.className = 'button secondary company-page-link';
+  companyPageLink.textContent = '会社案内を詳しく見る';
+  companyPageLink.style.marginTop = '18px';
+  aboutCopy.appendChild(companyPageLink);
+}
+
 // 実際の施工事例画像を掲載
 const worksGrid = document.querySelector('.works-grid');
 if (worksGrid) {
