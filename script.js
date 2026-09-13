@@ -57,7 +57,10 @@ if (nav) {
   const currentHref = pageMap[path];
   if (currentHref) {
     const currentLink = [...nav.querySelectorAll('a')].find((link) => link.getAttribute('href') === currentHref);
-    if (currentLink) currentLink.setAttribute('aria-current', 'page');
+    if (currentLink) {
+      currentLink.setAttribute('aria-current', 'page');
+      if (!currentLink.classList.contains('nav-cta')) currentLink.style.color = '#d96b32';
+    }
   }
 }
 
@@ -89,6 +92,13 @@ if (path === 'index.html' || path === '') {
   if (contactButton) {
     contactButton.href = 'contact.html';
     contactButton.textContent = 'お問い合わせ・無料見積もり';
+  }
+}
+
+if (path === 'contact.html') {
+  const confirmation = document.querySelector('.check span');
+  if (confirmation) {
+    confirmation.innerHTML = 'このサイトがWeb制作練習用の架空企業サイトであることを確認し、<a href="privacy.html" style="color:#d96b32;text-decoration:underline">プライバシーポリシー</a>を確認しました。';
   }
 }
 
